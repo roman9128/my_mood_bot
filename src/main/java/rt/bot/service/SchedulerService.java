@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import rt.bot.entity.PictureInfo;
 import rt.bot.telegram.MessageSender;
 
@@ -99,7 +98,7 @@ public class SchedulerService {
     private void sendPic(PictureInfo.Period period) {
         String picId = pictureInfoService.getActualPicId(period);
         if (picId == null) {
-            log.error("Отсутствуют изображения для отправки в период {}", period);
+            log.warn("Отсутствуют изображения для отправки в период {}", period);
             return;
         }
         byte[] fileBytes;

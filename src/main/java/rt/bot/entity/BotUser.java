@@ -23,6 +23,6 @@ public class BotUser {
     private LocalDateTime createdAt;
 
     public enum Status {
-        GUEST, USER
+        GUEST, USER, ADMIN
     }
 }

@@ -7,7 +7,6 @@ import rt.bot.entity.BotUser;
 import rt.bot.repo.BotUserRepository;
 
 import java.util.List;
-import java.util.Queue;
 
 @Slf4j
 @Service

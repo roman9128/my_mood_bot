@@ -3,6 +3,7 @@ package rt.bot.telegram;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -32,9 +33,22 @@ public class MessageSender {
                             .text(text)
                             .build());
         } catch (TelegramApiException e) {
-            log.error("Ошибка при отправке сообщения [{}] пользователю [{}]", text, userID);
+            log.error("Ошибка при отправке сообщения [{}] пользователю с id {}", text, userID);
         }
     }
+
+    public void sendFile(Long userID, InputFile file) {
+        try {
+            telegramClient.execute(
+                    SendDocument.builder()
+                            .chatId(userID)
+                            .document(file)
+                            .build());
+        } catch (TelegramApiException e) {
+            log.error("Ошибка при отправке файла пользователю {}: {}", userID, e.getMessage());
+        }
+    }
+
 
     public void sendPicture(Long userId, InputFile photo) {
         try {

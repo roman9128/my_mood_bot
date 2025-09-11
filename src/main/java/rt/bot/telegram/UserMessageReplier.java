@@ -16,8 +16,10 @@ public class UserMessageReplier {
 
     public void reply(BotUser botUser) {
         Long userId = botUser.getTelegramUserId();
-        if (botUser.getStatus() == BotUser.Status.GUEST) {
-            sender.send(userId, "Hello!");
+        if (botUser.getStatus() == BotUser.Status.ADMIN) {
+            sender.send(userId, "Помни про новые картинки");
+        } else if (botUser.getStatus() == BotUser.Status.GUEST) {
+            sender.send(userId, "Привет!");
             userService.changeUserStatus(userId);
         } else {
             sender.send(userId, "Вы хотели что-то сказать?\nМожете написать @kayat_mari");

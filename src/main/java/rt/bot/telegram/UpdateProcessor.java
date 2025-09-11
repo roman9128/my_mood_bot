@@ -12,13 +12,23 @@ import rt.bot.entity.BotUser;
 public class UpdateProcessor {
     private final UserAuthentication userAuthentication;
     private final UserMessageReplier userMessageReplier;
+    private final StatRequester statRequester;
 
     public void process(Update update) {
         if (TelegramUtils.isValidUpdate(update)) {
             BotUser botUser = userAuthentication.authenticate(update);
-            userMessageReplier.reply(botUser);
+            if (adminRequestForStat(update, botUser)) {
+                statRequester.sendStat(botUser);
+            } else {
+                userMessageReplier.reply(botUser);
+            }
         } else {
-            log.info("Отсутствует поддерживаемое содержание в обновлении [{}]", update.getUpdateId());
+            log.info("Отсутствует поддерживаемое содержание в обновлении: {}", update);
         }
+    }
+
+    private boolean adminRequestForStat(Update update, BotUser botUser) {
+        if (botUser.getStatus() != BotUser.Status.ADMIN) return false;
+        return TelegramUtils.extractUserTextFromUpdate(update).equalsIgnoreCase("статистика");
     }
 }
