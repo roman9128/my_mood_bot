@@ -20,7 +20,7 @@ public class PictureInfoService {
     private final PictureInfoRepository pictureInfoRepository;
 
     public String getLastSentPicIdByPeriod(PictureInfo.Period period) {
-        Optional<PictureInfo> pi = pictureInfoRepository.findTopByPeriodOrderByLastQueriedDesc(period);
+        Optional<PictureInfo> pi = pictureInfoRepository.findTopByPeriodAndLastQueriedNotNullOrderByLastQueriedDesc(period);
         return pi.map(PictureInfo::getGoogleDriveFileId).orElse(null);
     }
 

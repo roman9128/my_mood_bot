@@ -12,8 +12,7 @@ import java.util.Optional;
 @Repository
 public interface PictureInfoRepository extends JpaRepository<PictureInfo, String> {
 
-    @Query("SELECT pi FROM PictureInfo pi WHERE pi.period = :period ORDER BY pi.lastQueried DESC LIMIT 1")
-    Optional<PictureInfo> findTopByPeriodOrderByLastQueriedDesc(@Param("period") PictureInfo.Period period);
+    Optional<PictureInfo> findTopByPeriodAndLastQueriedNotNullOrderByLastQueriedDesc(PictureInfo.Period period);
 
     @Query("SELECT p.googleDriveFileId FROM PictureInfo p WHERE p.period = :period")
     List<String> findGoogleDriveFileIdsByPeriod(@Param("period") PictureInfo.Period period);

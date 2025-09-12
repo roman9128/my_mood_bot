@@ -25,7 +25,7 @@ public class UserMessageReplier {
             pictureSendingService.sendMorningPicToNewUser(userId);
             userService.changeUserStatus(userId);
         } else {
-            sender.send(userId, "Вы хотели что-то сказать?\nМожете написать @kayat_mari");
+            sender.send(userId, "Я ничего не умею, кроме как отправлять картинки. Если есть вопросы, напишите @kayat_mari");
         }
         log.info("Ответил на входящее сообщение от пользователя с id {}", userId);
     }
