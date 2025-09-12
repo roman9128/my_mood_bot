@@ -19,6 +19,7 @@ public class StatRequester {
         InputFile report = statService.getReport();
         if (report != null) {
             sender.sendFile(botUser.getTelegramUserId(), report);
+            log.info("Отправил статистику админу {}", botUser.getTelegramUserId());
         } else {
             sender.send(botUser.getTelegramUserId(), "Не удалось подготовить отчёт в XLSX");
         }

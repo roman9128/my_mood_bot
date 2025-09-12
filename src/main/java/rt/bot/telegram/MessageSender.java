@@ -49,8 +49,21 @@ public class MessageSender {
         }
     }
 
-
     public void sendPicture(Long userId, InputFile photo) {
+        try {
+            telegramClient.execute(
+                    SendPhoto.builder()
+                            .chatId(userId)
+                            .photo(photo)
+                            .build());
+        } catch (TelegramApiException e) {
+            log.error("Ошибка при отправке изображения пользователю с id {}: {}", userId, e.getMessage());
+        }
+    }
+
+    public void sendPicture(Long userId, byte[] fileBytes) {
+        InputStream stream = new ByteArrayInputStream(fileBytes);
+        InputFile photo = new InputFile(stream, "pic.png");
         try {
             telegramClient.execute(
                     SendPhoto.builder()
