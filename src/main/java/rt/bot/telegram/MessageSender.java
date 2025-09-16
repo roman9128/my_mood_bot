@@ -37,6 +37,19 @@ public class MessageSender {
         }
     }
 
+    public void send(List<Long> allUsersIds, String userMsg) {
+        Queue<Long> idQueue = new LinkedList<>(allUsersIds);
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleWithFixedDelay(() -> {
+            Long userId = idQueue.poll();
+            if (userId != null) {
+                send(userId, userMsg);
+            } else {
+                executor.shutdown();
+            }
+        }, 0, 51, TimeUnit.MILLISECONDS);
+    }
+
     public void sendFile(Long userID, InputFile file) {
         try {
             telegramClient.execute(

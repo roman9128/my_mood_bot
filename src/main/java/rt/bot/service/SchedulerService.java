@@ -7,12 +7,17 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import rt.bot.entity.PictureInfo;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class SchedulerService {
 
     private final PictureSendingService pictureSendingService;
+    private final SpamService spamService;
 
     @PostConstruct
     public void initialCheckUp() {
@@ -38,5 +43,13 @@ public class SchedulerService {
         log.info("Запущена задача отправки сообщений в 21 вечера");
         pictureSendingService.work(PictureInfo.Period.EVENING);
         log.info("Завершена задача отправки сообщений в 21 вечера");
+    }
+
+    @Scheduled(cron = "0 0 20 11-17 * *", zone = "Europe/Moscow")
+    public void sendMoneyRequest() {
+        if (LocalDate.now(ZoneId.of("Europe/Moscow")).getDayOfWeek() != DayOfWeek.FRIDAY) return;
+        log.info("Запущена задача отправки напоминания о пожертвовании");
+        spamService.askDonat();
+        log.info("Завершена задача отправки напоминания о пожертвовании");
     }
 }
